@@ -1,6 +1,5 @@
 __config() -> {
    'commands' -> {
-     'circle <radius> <block>' -> 'circle',
      'parabolic <center> <radius> <height> <block>' -> 'parabolic',
      'catenary <center> <radius> <height> <block>' -> ['catenary', 3],
      'catenary <center> <radius> <height> <block> <curve_param>' -> 'catenary',
@@ -13,22 +12,6 @@ __config() -> {
      'curve_param' -> {'type' -> 'float', 'suggest' -> [3, 1.7]},
    }
 };
-
-circle(radius, blk) -> (
-  center_pos = pos(player());
-  print('center ' + center_pos);
-
-  radSq = radius ^ 2;
-
-  c_for(x=0, x<radius, x+=1,
-    c_for(z=0, z<radius, z+=1,
-      r = x^2 + z^2;
-      if(r <= radSq,
-        _setQuadrants(center_pos, [x, 0, z], blk)
-      )
-    )
-  );
-);
 
 parabolic(center, radius, height, blk) -> (
   heightScale = height / radius^2;
