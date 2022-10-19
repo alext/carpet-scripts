@@ -1,8 +1,7 @@
 __config() -> {
    'commands' -> {
      'circle <radius> <block>' -> 'circle',
-     'parabolic <center> <radius> <height> <block>' -> ['parabolic', 1],
-     'parabolic <center> <radius> <height> <block> <factor>' -> 'parabolic',
+     'parabolic <center> <radius> <height> <block>' -> 'parabolic',
      'catenary <center> <radius> <height> <block>' -> ['catenary', 1],
      'catenary <center> <radius> <height> <block> <factor>' -> 'catenary',
    },
@@ -31,13 +30,12 @@ circle(radius, blk) -> (
   );
 );
 
-parabolic(center, radius, height, blk, factor) -> (
-  facSq = factor ^ 2;
-  heightScale = height / (radius^2 / facSq);
+parabolic(center, radius, height, blk) -> (
+  heightScale = height / radius^2;
 
   c_for(x=0, x<=radius, x+=1,
     c_for(z=0, z<=radius, z+=1,
-      y = height - (x^2 / facSq + z^2 / facSq) * heightScale;
+      y = height - (x^2 + z^2) * heightScale;
       if(y >= 0,
         _setQuadrants(center, [x,y,z], blk)
       )
