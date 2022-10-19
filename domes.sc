@@ -2,15 +2,15 @@ __config() -> {
    'commands' -> {
      'circle <radius> <block>' -> 'circle',
      'parabolic <center> <radius> <height> <block>' -> 'parabolic',
-     'catenary <center> <radius> <height> <block>' -> ['catenary', 1],
-     'catenary <center> <radius> <height> <block> <factor>' -> 'catenary',
+     'catenary <center> <radius> <height> <block>' -> ['catenary', 3],
+     'catenary <center> <radius> <height> <block> <curve_param>' -> 'catenary',
    },
    'arguments' -> {
      'center' -> {'type' -> 'pos'},
      'radius' -> {'type' -> 'int', 'min' -> 1, 'suggest' -> [10, 32]},
      'height' -> {'type' -> 'int', 'min' -> 1, 'suggest' -> [5, 20]},
      'block' -> {'type' -> 'block'},
-     'factor' -> {'type' -> 'float', 'suggest' -> [1, 1.7]},
+     'curve_param' -> {'type' -> 'float', 'suggest' -> [3, 1.7]},
    }
 };
 
@@ -47,7 +47,8 @@ _cat(x, z, factor) -> (
   factor * cosh(sqrt(x^2 + z^2) / factor) - factor;
 );
 
-catenary(center, radius, height, blk, factor) -> (
+catenary(center, radius, height, blk, curve_param) -> (
+  factor = radius / curve_param;
   heightScale = height / _cat(radius, 0, factor);
 
   c_for(x=0, x<=radius, x+=1,
