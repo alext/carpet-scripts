@@ -26,17 +26,18 @@ parabolic(center, radius, height, blk) -> (
   );
 );
 
-_cat(x, z, factor) -> (
-  factor * cosh(sqrt(x^2 + z^2) / factor) - factor;
-);
-
 catenary(center, radius, height, blk, curve_param) -> (
   factor = radius / curve_param;
-  heightScale = height / _cat(radius, 0, factor);
+
+  cat_func(x, z, outer(factor)) -> (
+    factor * cosh(sqrt(x^2 + z^2) / factor) - factor;
+  );
+
+  heightScale = height / cat_func(radius, 0);
 
   c_for(x=0, x<=radius, x+=1,
     c_for(z=0, z<=radius, z+=1,
-      y = round(height - _cat(x, z, factor) * heightScale);
+      y = round(height - cat_func(x, z) * heightScale);
       if(y >= 0,
         _setQuadrants(center, [x,y,z], blk)
       )
